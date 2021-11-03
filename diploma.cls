@@ -118,6 +118,17 @@
 \Dipl@ThesisCaption={Bakalářská práce}
 }
 }
+\DeclareOption{semestral}
+{
+\setcounter{Dipl@CurrentThesisType}{\Dipl@BachelorThesis}
+\ifthenelse{\value{Dipl@CurrentThesisLanguage}=\Dipl@EnglishLanguage}
+{
+\Dipl@ThesisCaption={Term Paper}
+}
+{
+\Dipl@ThesisCaption={Semestrální práce}
+}
+}
 \DeclareOption{bachelorpractice}
 {
 \setcounter{Dipl@CurrentThesisType}{\Dipl@BachelorPractice}
@@ -183,19 +194,19 @@
 \newcommand{\ThesisAuthor}[1]{\Dipl@ThesisAuthor={#1}}
 \newcommand{\ThesisSupervisor}[1]{\Dipl@ThesisSupervisor={#1}}
 \newcommand{\CzechThesisTitle}[1]{\ifthenelse{\value{Dipl@CurrentThesisType}=\Dipl@BachelorPractice}{\relax}{\Dipl@CzechThesisTitle={#1}}}
-\newcommand{\EnglishThesisTitle}[1]{\ifthenelse{\value{Dipl@CurrentThesisType}=\Dipl@BachelorPractice}{\relax}{\Dipl@EnglishThesisTitle={#1}}}
+% \newcommand{\EnglishThesisTitle}[1]{\ifthenelse{\value{Dipl@CurrentThesisType}=\Dipl@BachelorPractice}{\relax}{\Dipl@EnglishThesisTitle={#1}}}
 \newcommand{\SubmissionYear}[1]{\Dipl@SubmissionYear={#1}}
 \newcommand{\Acknowledgement}[1]{\Dipl@Acknowledgement={#1}}
-\newcommand{\CzechAbstract}[1]{\Dipl@CzechAbstract={#1}}
-\newcommand{\CzechKeywords}[1]{\Dipl@CzechKeywords={#1}}
-\newcommand{\EnglishAbstract}[1]{\Dipl@EnglishAbstract={#1}}
-\newcommand{\EnglishKeywords}[1]{\Dipl@EnglishKeywords={#1}}
+% \newcommand{\CzechAbstract}[1]{\Dipl@CzechAbstract={#1}}
+% \newcommand{\CzechKeywords}[1]{\Dipl@CzechKeywords={#1}}
+% \newcommand{\EnglishAbstract}[1]{\Dipl@EnglishAbstract={#1}}
+% \newcommand{\EnglishKeywords}[1]{\Dipl@EnglishKeywords={#1}}
 \newcommand{\AddAcronym}[2]{\Dipl@AddTokens{\Dipl@Acronyms}{#1&--&#2\\}}
 \newcommand{\MakeTitlePages}
 {
 \pagestyle{empty}
 \Dipl@TitlePage
-\Dipl@AbstractsKeywordsPage
+% \Dipl@AbstractsKeywordsPage
 \Dipl@AcknowledgementPage
 \pagestyle{plain}
 \tableofcontents\clearpage
@@ -216,80 +227,80 @@
 }
 \newcommand{\Dipl@TitlePage}
 {
-\ifthenelse{\value{Dipl@CurrentThesisType}=\Dipl@PhDThesis}
-{
-\loadgeometry{Dipl@TwoSideNoFoot}
-}
-{
-\loadgeometry{Dipl@OneSideNoFoot}
-}
-\thispagestyle{empty}
-\begin{flushleft}
-\huge
-\sffamily
-\vspace*{-0.4in}
-{\hspace*{-0.3in}\includegraphics[height=30mm]{\the\Dipl@FacultyLogoFileName}}
-\par
-\bigskip
-\bigskip
-\bigskip
-\textbf{\Dipl@LanguageDependentText{\the\Dipl@CzechThesisTitle}{\the\Dipl@CzechThesisTitle}{\the\Dipl@EnglishThesisTitle}}
-\par
-\bigskip
-{\Large\Dipl@LanguageDependentText{\the\Dipl@EnglishThesisTitle}{\the\Dipl@EnglishThesisTitle}{\the\Dipl@CzechThesisTitle}}
-\par
-\bigskip
-\bigskip
-\the\Dipl@ThesisAuthor
-\par
-\vfill
-{
-\Large
-\renewcommand{\arraystretch}{1.4}
-\begin{tabular}{@{}l}
-\the\Dipl@ThesisCaption\\
-\the\Dipl@SupervisorCaption:~\the\Dipl@ThesisSupervisor\\
-Ostrava,~\ifthenelse{\equal{\the\Dipl@SubmissionYear}{\empty}}{\number\year}{\the\Dipl@SubmissionYear}\\
-\end{tabular}
-}
-\end{flushleft}
-\clearpage
-\restoregeometry
+    \ifthenelse{\value{Dipl@CurrentThesisType}=\Dipl@PhDThesis}
+    {
+    \loadgeometry{Dipl@TwoSideNoFoot}
+    }
+    {
+    \loadgeometry{Dipl@OneSideNoFoot}
+    }
+    \thispagestyle{empty}
+    \begin{flushleft}
+    \huge
+    \sffamily
+    \vspace*{-0.4in}
+    {\hspace*{-0.3in}\includegraphics[height=30mm]{\the\Dipl@FacultyLogoFileName}}
+    \par
+    \bigskip
+    \bigskip
+    \bigskip
+    \textbf{\Dipl@LanguageDependentText{\the\Dipl@CzechThesisTitle}{\the\Dipl@CzechThesisTitle}{\the\Dipl@EnglishThesisTitle}}
+    \par
+    \bigskip
+    %{\Large\Dipl@LanguageDependentText{\the\Dipl@EnglishThesisTitle}{\the\Dipl@EnglishThesisTitle}{\the\Dipl@CzechThesisTitle}}
+    \par
+    \bigskip
+    \bigskip
+    \the\Dipl@ThesisAuthor
+    \par
+    \vfill
+    {
+    \Large
+    \renewcommand{\arraystretch}{1.4}
+    \begin{tabular}{@{}l}
+    \the\Dipl@ThesisCaption\\
+    \the\Dipl@SupervisorCaption:~\the\Dipl@ThesisSupervisor\\
+    Ostrava,~\ifthenelse{\equal{\the\Dipl@SubmissionYear}{\empty}}{\number\year}{\the\Dipl@SubmissionYear}\\
+    \end{tabular}
+    }
+    \end{flushleft}
+    \clearpage
+    \restoregeometry
 }
 \newcommand{\Dipl@AbstractsKeywordsPage}
 {
-\ifthenelse{\value{Dipl@CurrentThesisLanguage}=\Dipl@SlovakLanguage}
-{
-\begin{otherlanguage}{slovak}
-\section*{\the\Dipl@CzechAbstractCaption}
-\the\Dipl@CzechAbstract
-\section*{Kľúčové slová}
-\the\Dipl@CzechKeywords
- \end{otherlanguage}
-}
-{
-\begin{otherlanguage}{czech}
-\section*{\the\Dipl@CzechAbstractCaption}
-\the\Dipl@CzechAbstract
-\section*{Klíčová slova}
-\the\Dipl@CzechKeywords
-\end{otherlanguage}
-}
-\ifthenelse{\value{Dipl@CurrentThesisType}=\Dipl@PhDThesis}
-{
-\clearpage
-}
-{
-\par
-\vspace{30mm plus 0mm minus 30mm}
-}
-\begin{otherlanguage}{english}
-\section*{\the\Dipl@EnglishAbstractCaption}
-\the\Dipl@EnglishAbstract
-\section*{Keywords}
-\the\Dipl@EnglishKeywords
-\end{otherlanguage}
-\clearpage
+    \ifthenelse{\value{Dipl@CurrentThesisLanguage}=\Dipl@SlovakLanguage}
+    {
+        \begin{otherlanguage}{slovak}
+        \section*{\the\Dipl@CzechAbstractCaption}
+        \the\Dipl@CzechAbstract
+        \section*{Kľúčové slová}
+        \the\Dipl@CzechKeywords
+        \end{otherlanguage}
+    }
+    {
+        \begin{otherlanguage}{czech}
+        \section*{\the\Dipl@CzechAbstractCaption}
+        \the\Dipl@CzechAbstract
+        \section*{Klíčová slova}
+        \the\Dipl@CzechKeywords
+        \end{otherlanguage}
+    }
+    \ifthenelse{\value{Dipl@CurrentThesisType}=\Dipl@PhDThesis}
+    {
+        \clearpage
+    }
+    {
+        \par
+        \vspace{30mm plus 0mm minus 30mm}
+    }
+    \begin{otherlanguage}{english}
+    \section*{\the\Dipl@EnglishAbstractCaption}
+    \the\Dipl@EnglishAbstract
+    \section*{Keywords}
+    \the\Dipl@EnglishKeywords
+    \end{otherlanguage}
+    \clearpage
 }
 \newcommand{\Dipl@AcknowledgementPage}
 {
