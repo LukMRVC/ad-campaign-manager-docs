@@ -112,16 +112,44 @@ Formáty můžeme rozdělit na textové a grafické. Zatímco u textových form�
     \item Karusel -- posuvné reklamy s více obrázky.
 \end{itemize} 
 
-\chapter{Analýza systémů pro online kampaně}
-Tato kapitola se zabývá, jak název naznačuje, analýzou existujících systémů pro správu reklamních kampaní, rozebírá jejich možnosti a rozdíly.
+\subsection{XML feed}
+
+\chapter{Analýza systémů pro správu kampaní}
+Jelikož jednoduchá správa reklamních kampaní je problém existující delší dobu, byly již vytvořeny nástroje ulehčující tuto úlohu.
+V této kapitole je popsáno několik z těchto možných řešení se zaměřením na usnadnění práce při správě kampaní.
 
 
 \section{Sklik}
+Český Sklik provozuje svůj systém ve formě webové aplikace. Nabízí import a export kampaní 
+(ve formátu CSV\footnote{Ačkoliv formát naznačuje oddělení polí čárkami, ve skutečnosti jedná spíše o znak tábulátoru.})
+pro zálohování nebo přenos mezi dalšími systémy. Takto exportovaný soubor má výhodu přímé a rychlé editace dat, ale je podmíněn nutnou znalostí významu jednotlivých
+sloupců. Při importu je možné využít nastavení pro přepočet měny, najít a nahradit, filtr na určité sloupce a typ import, tedy zda má import kampaně přepsat, aktualizovat
+nebo duplikovat.
+Další funkcí jsou návrhy klíčových slov. Tato funkce uživateli zobrazí hledanost klíčového slova (počet zahledání za období), roční trend, velikost konkurence a průměrnou
+cenu za proklik reklamy zobrazenou na dané klíčové slovo. Poslední a velice užitečná funkce jsou automatická pravidla. Automatická pravidla se mohou nastavit buďto na
+celé sestavy nebo jednotlivá klíčová slova. Jejich účel je automatické zvyšování/snižování ceny za proklik na zákládě například: počtu prokliků, zobrazení konverze, atd.
+Tímto dynamickým ovládáním ceny za reklamu si inzerenti mohou v případě dobré výkonnosti sestavy/klíčového posílit svou pozici oproti konkurenci, nebo snížit náklady
+v případě, kdy se nedaří.
 
-\section{Google Ad Manager}
 
-\section{Facebook}
 
+\section{Google Ads Editor}
+Nástroj vytvořený společností Google je desktopová aplikace s možností správy nejen kampaní, ale také inzerentních účtů na platformě Google Ads. Využitím operace
+\emph{drag and drop} lze jednoduše kopírovat sestavy a kampaně a další nastavení. Při vytváření kampaní může uživatel zadat nebo vybrat nesprávné kombinace určitých
+nastavení, je však na ně ihned upozorněn a nucen je opravit. Pro nastavení ceny nabídek se namísto automatických pravidel,
+uplatňuje tzv. \emph{strategie nabídek} (angl. Bid strategy). Zde uživatel může vybrat pevně danou cenu za proklik, nebo strategii na maximalizaci prokliků, konverzí
+a další. Těmto strategiím se dají nastavit stropní hodnoty. Dalším zajimavým nastavením je také rotování reklam, tedy jak často se budou zobrazovat reklamy v této
+kampani, podle toho, jak se jim daří. Většina ostatních nastavení lze rychle vyplnit a vytvořit sestavy a reklamy.
+
+\section{Mergado}
+Produktové kampaně využivají primárně data z XML feedu. Často se však stává, že je potřeba ve feedu udělat udělat nějaké úpravy, validovat správnou strukturu nebo feed
+optimalizovat. Platforma Mergado umožňuje provádět tyto změny v XML feedu z prostředí prohlížeče bez jakéhokoli zásahu programátora. Tento upravený feed je poté
+poslán na srovnávače zboží (Heureka, Zboží.cz, \ldots), případně na inzerentní systémy jako například Sklik. Mergado přes svůj \emph{App Cloud} umožňuje například
+upravení cen produktů v XML v feedu v závislosti na ceně konkurentů, automatickou úpravu biddingu nebo dokonce obrázkovou úpravu produktovýchg náhledů.
+
+\section{XeMeL}
+Další nástroj pro úpravu XML feedů. Mezi jeho silné stránky spadá to, že XML feedy aktualizuje každých 45 minut, dokáže spojit více feedů do jednoho, případně
+se přizpůsobí i na odlišené vstupní feedy. 
 
 \chapter{Návrh}
 
