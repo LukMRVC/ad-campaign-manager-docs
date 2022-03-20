@@ -126,13 +126,17 @@ Možnost importovat a exportovat kampaně je nutný základ pro možnosti správ
 \subsubsection{Prvotní zpracování}
 Prvním krokem je vydolování dat ze souboru. Nejčastější formát pro import a export je textový soubor CSV. Struktura se obecně ve více inzerentních
 systémů příliš neliší, ale mohou nastat nějaké drobné odchylky\footnote{\href{https://support.google.com/google-ads/editor/answer/57747}{https://support.google.com/google-ads/editor/answer/57747}}
-nebo alternativní názvy, se kterými je nutné si poradit. Importovaný soubor může velikostně nabývat až několik desítek MB a jeho zpracování může trvat delší
+nebo alternativní názvy, se kterými je nutné si poradit. Jako dobrá praxe je potřebné zajistit, aby v případě chyby čtení nebo dolování dat nebyl celý
+proces ukončen. Například se může stát, že nahraný soubor bude obsahovat dva stejnojmenné sloupce, nebo zároveň sloupec a jeho alternativní název. Tento
+stav by měl vyústit v chybu, která bude zalogována a reportována uživateli, ale zpracování bude dále pokračovat. 
+Importovaný soubor může velikostně nabývat až několik desítek MB a jeho zpracování může trvat delší
 dobu. Je tedy vhodné použít systém fronty úloh, který umožní zpracování importu na pozadí a nebude uživatele zdržovat. V momentě dokončení úlohy importu
 bude uživatel notifikován o jejím splnění.
 
 \subsubsection{Následné zpracování importu}
-Druhým krokem celkového procesu importu je výběr kampaní, sestav a klíčových slov, které se mají uložit do systému, jelikož nemusí být
-opravodým úmyslem všechny kampaně opravdu ukládat. Naopak v případné shodě importovaných a uložených kampaní je vhodné uživatele o této skutečnosti
+Druhým krokem celkového procesu importu je zobrazení zpracovaných dat, report případných chyb s možnostmi opravy a výběr kampaní, sestav a klíčových slov,
+které se mají skutečně uložit do systému, jelikož nemusí být opravdovým úmyslem všechny kampaně opravdu ukládat.
+Naopak v případné shodě importovaných a uložených kampaní je vhodné uživatele o této skutečnosti
 obeznámit a dát mu možnost volby, zda chce kampaň duplikovat či nahradit původní. 
 V tomto bodu se taky nabízí využítí například funkce \enquote{najít a nahradit} nebo ignorování hodnot některých sloupců.
 
@@ -148,6 +152,7 @@ Výběr klíčových slov je často závislý na ročním počtu zahledání, na
 na dané klíčové slovo. Statistiky o zahledání frází je možné získat z aplikačních rozhraní reklamních systémů nebo jiných zdrojů. Výsledná data pak zahrnují
 průměrnou cena za proklik, průměr ročního a jednotlivých měsíčních zahlédání.
 
-\subsection{Úprava XML Feedu}
+% \subsection{Úprava XML Feedu}
+
 
 \endinput
