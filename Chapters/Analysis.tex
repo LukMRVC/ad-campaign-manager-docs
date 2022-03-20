@@ -113,18 +113,28 @@ Další nástroj pro úpravu XML feedů. Mezi jeho silné stránky spadá to, ž
 se přizpůsobí i na odlišené vstupní feedy.
 
 \section{Požadavky na vlastní nástroj}
-% TODO: Zmínit možnosti editace kampaní - proč je CSV lepší než klikat na webovce
+% % TODO: Zmínit možnosti editace kampaní - proč je CSV lepší než klikat na webovce
 
-\subsection{Tvorba kampaní}
-Možnost tvorby kampaní se může rozložit buďto na jednolivé systémy nebo vytvořením "Super kampaně." Super kampaň bude mít možnost rozložení mezi více platforem pro správu kampaní.
-Pro každý z těchto systémů budou různé možnosti nastavení parametrů kampaně, podle podpory funkcí na daném systému. Příkladem může být nastavení denní rozpočtu, geologické cílení atd.
-Výhodou takové nastavení bude maximální kontrola nad kampaněmi, ale všechny potřebné věci (bannery, klíčová slova a další) budou spravovány na jednom jednoduchém rozhraní.
+% \subsection{Tvorba kampaní}
+% Možnost tvorby kampaní se může rozložit buďto na jednolivé systémy nebo vytvořením "Super kampaně." Super kampaň bude mít možnost rozložení mezi více platforem pro správu kampaní.
+% Pro každý z těchto systémů budou různé možnosti nastavení parametrů kampaně, podle podpory funkcí na daném systému. Příkladem může být nastavení denní rozpočtu, geologické cílení atd.
+% Výhodou takové nastavení bude maximální kontrola nad kampaněmi, ale všechny potřebné věci (bannery, klíčová slova a další) budou spravovány na jednom jednoduchém rozhraní.
 
 \subsection{Import a export}
-Možnost importovat a exportovat kampaně je nutný základ pro možnosti správy. Nejčastější formát pro import a export je textový soubor CSV. Struktura se obecně ve více inzerentních
+Možnost importovat a exportovat kampaně je nutný základ pro možnosti správy. Proces importu je možné rozdělit do dvou částí.
+
+\subsubsection{Prvotní zpracování}
+Prvním krokem je vydolování dat ze souboru. Nejčastější formát pro import a export je textový soubor CSV. Struktura se obecně ve více inzerentních
 systémů příliš neliší, ale mohou nastat nějaké drobné odchylky\footnote{\href{https://support.google.com/google-ads/editor/answer/57747}{https://support.google.com/google-ads/editor/answer/57747}}
-nebo alternativní názvy, se kterými je nutné si poradit. Dále je správný export podmíněm tím, že každý řádek musí popisovat samostatnou položku kampaně.
-Jakmile je toto vyřešeno, je možné importovat kampaně a naopak exportovat a následně nahrávat do víceméně každého reklamního systému.
+nebo alternativní názvy, se kterými je nutné si poradit. Importovaný soubor může velikostně nabývat až několik desítek MB a jeho zpracování může trvat delší
+dobu. Je tedy vhodné použít systém fronty úloh, který umožní zpracování importu na pozadí a nebude uživatele zdržovat. V momentě dokončení úlohy importu
+bude uživatel notifikován o jejím splnění.
+
+\subsubsection{Následné zpracování importu}
+Druhým krokem celkového procesu importu je výběr kampaní, sestav a klíčových slov, které se mají uložit do systému, jelikož nemusí být
+opravodým úmyslem všechny kampaně opravdu ukládat. Naopak v případné shodě importovaných a uložených kampaní je vhodné uživatele o této skutečnosti
+obeznámit a dát mu možnost volby, zda chce kampaň duplikovat či nahradit původní. 
+V tomto bodu se taky nabízí využítí například funkce \enquote{najít a nahradit} nebo ignorování hodnot některých sloupců.
 
 \subsection{Správa a editace kampaní}
 Pro správu a editaci existuje spousta nástrojů. Z hlediska efektivity práce je jedna z nejrychlejších cest tvorby kampaní použití tabulkových procesorů. Tabulkové procesory
@@ -132,6 +142,11 @@ umožnují rychlou editaci v podobně duplikace a úprav hodnot pomocí klávesn
 zadaných dat, návrhy klíčových slov a ostatní služby. Výše popsané nástroje jsou velice závislé na uživatelském rozhraní a neumožňují jednoduchou navigaci klávesnicí.
 Nachází se zde potenciál pro vytvoření systémů, kde správa a editace kombinuje výhody rychlé a jednoduché navigace s využitím klávesnice a přitom uživateli validatovat
 zadávané hodnoty. Existuje taky možnost napojení na API dalších stran a získat další informace, např. návrhy klíčových slov.
+
+\subsubsection{Správa klíčových slov}
+Výběr klíčových slov je často závislý na ročním počtu zahledání, například při prodeji sezónního zboží. Od toho se taky odvící průměrná cena za proklik
+na dané klíčové slovo. Statistiky o zahledání frází je možné získat z aplikačních rozhraní reklamních systémů nebo jiných zdrojů. Výsledná data pak zahrnují
+průměrnou cena za proklik, průměr ročního a jednotlivých měsíčních zahlédání.
 
 \subsection{Úprava XML Feedu}
 
