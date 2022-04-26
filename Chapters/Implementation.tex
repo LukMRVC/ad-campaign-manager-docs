@@ -1,7 +1,13 @@
 \chapter{Implementace}
 \label{chap:implementation}
-Celý systém pro správu kampaní je rozdělen do několika celků. Základem je webový server, který zprostředkovává komunikaci mezi různymi dalšími častmi.
-Data jsou perzistována v relační databázi PostgreSQL.
+Celý systém pro správu kampaní je rozdělen do několika celků. Základem je webový server, postavený na frameworku Next.js, který zprostředkovává komunikaci mezi dalšími častmi.
+Pracovní postup se systémem je následnový:
+\begin{enumerate}
+    \item import dat,
+    \item úprava ve webovém rozhraní,
+    \item exportování dat a použití v reklamním systému.
+\end{enumerate}
+Data jsou perzistována v relační databázi PostgreSQL pomocí ORM systému Prisma.
 Paměťové úložiště v databázi Redis slouží jako zprostředkoval pro frontu úloh, cacheování požadavků na API třetích stran a dočasné úložiště importovaných dat.
 
 \begin{figure}[h]
@@ -20,10 +26,52 @@ Po rozkliknutí je přesměrován na stránku, kde si může vybrat, které čá
 V případě využití funkce najít a nahradit se spustí další úloha na pozadí, která tento požadavek splní.
 Následně jsou data zapsaná do relační databáze.
 
+Na třídním diagramu \ref{fig:campaigns-class-diagram} je vidět struktura kampaní, do které jsou data z CSV souboru transformována. Třída \emph{Targeting} reprezentuje všechny
+možné typy cílení, které se mohou v CSV vyskytovat (věk, pohlaví, \ldots). 
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth]{Figures/campaigns-class-diagram.pdf}
+    \caption{Třídní diagram sturktury kampaní}
+    \label{fig:campaigns-class-diagram}
+\end{figure}
+
 % Dodělat do systému funkci najít a nahradit -> další celery task, který upraví data, přepíše v 
 % Redisu a pošle request na Webserver, který to už uloží do DB
 
+
 \section{Tabulková správa kampaní}
+Jak již bylo zminěno v části \ref{subsec:edit-campaigns}, jedním z nejrychlejších způsobu editace kampaní je tabulkovým procesorem.
+Proto bylo ve webovém rozhraní vytvořena možnost pracovat podobným způsobem. Obrázek \ref{fig:datagrid-window} ukazuje celkový pohled na rozhraní, ve kterém uživatel
+může provádět úpravy a správu svých kampaní a metadat. Hlavní částí je komponenta \emph{DataGrid} (\ref{fig:datagrid}). Ta jako svůj vstup vyžaduje definici jednotlivých sloupců
+a pak samotná data. Definice sloupců obsahuje jeho datový typ, případně taky seznam možností, ze kterých si uživatel bude moct vybrat svou požadovanou hodnotu.
+Tato funkcionalita je znázorněna na obrázku \ref{fig:cell-choices} a jeji využití spočívá převážně u sloupců, jenž mají jednoznačně definované možné hodnoty.
+
+Všechny provedené změny se automaticky ukládají pomocí technologie \emph{Websockets}. Ta umožňuje vytvořit obousměrný komunikační kanál mezi serverem a prohlížečem uživatele.
+Websocket na serverové straně také umožňuje vzniklé události přeposílat všem připojeným klientům metodou broadcast. Tato spojení lze rozlišit podle přihlášeného uživatele nebo jakýchkoli jiných
+kritérií. Díky onomu přeposílání událostí je možné, aby na správně kampaní pracovalo více uživatelů najednou a v reálném čase viděli všechny prováděné změny.
+
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth]{Figures/ui/whole-window.png}
+    \caption{Pohled na webové rozhraní umožňující správu kampaní}
+    \label{fig:datagrid-window}
+\end{figure}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth]{Figures/ui/datagrid.png}
+    \caption{Komponenta DataGrid}
+    \label{fig:datagrid}
+\end{figure}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.5\textwidth]{Figures/ui/cell-choices.png}
+    \caption{Výběr možností}
+    \label{fig:cell-choices}
+\end{figure}
 
 \subsection{Návrhy klíčových slov}
 
