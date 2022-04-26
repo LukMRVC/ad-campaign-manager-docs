@@ -18,6 +18,7 @@ Paměťové úložiště v databázi Redis slouží jako zprostředkoval pro fro
 \end{figure}
 
 \section{Importování souborů}
+% TODO: UI of import and search and replace
 Ve webovém rozhraní, které slouží jako hlavní způsob interakce systému s uživatelem, je umožněno vybírání souboru ke zpracování.
 Jakmile je tento soubor nahrán na server, vytvoří se nový úkol do fronty úloh. Na pozadí je automaticky spuštěň nový proces, který
 zpracovává nahraný soubor. Uživatele v tento moment nic neblokuje a nebrání s další interakcí se systémem. Jakmile jsou data ze souboru
@@ -41,32 +42,45 @@ možné typy cílení, které se mohou v CSV vyskytovat (věk, pohlaví, \ldots)
 
 
 \section{Tabulková správa kampaní}
+% TODO: Controls/orientation of datagrid
 Jak již bylo zminěno v části \ref{subsec:edit-campaigns}, jedním z nejrychlejších způsobu editace kampaní je tabulkovým procesorem.
 Proto bylo ve webovém rozhraní vytvořena možnost pracovat podobným způsobem. Obrázek \ref{fig:datagrid-window} ukazuje celkový pohled na rozhraní, ve kterém uživatel
-může provádět úpravy a správu svých kampaní a metadat. Hlavní částí je komponenta \emph{DataGrid} (\ref{fig:datagrid}). Ta jako svůj vstup vyžaduje definici jednotlivých sloupců
-a pak samotná data. Definice sloupců obsahuje jeho datový typ, případně taky seznam možností, ze kterých si uživatel bude moct vybrat svou požadovanou hodnotu.
-Tato funkcionalita je znázorněna na obrázku \ref{fig:cell-choices} a jeji využití spočívá převážně u sloupců, jenž mají jednoznačně definované možné hodnoty.
-
+může provádět úpravy a správu svých kampaní a metadat.
 \begin{figure}[h]
     \centering
     \includegraphics[width=1\textwidth]{Figures/ui/whole-window.png}
     \caption{Pohled na webové rozhraní umožňující správu kampaní}
     \label{fig:datagrid-window}
 \end{figure}
-
+Hlavní částí je komponenta \emph{DataGrid} (\ref{fig:datagrid}).
 \begin{figure}[h]
     \centering
     \includegraphics[width=1\textwidth]{Figures/ui/datagrid.png}
     \caption{Komponenta DataGrid}
     \label{fig:datagrid}
 \end{figure}
+Ta jako svůj vstup vyžaduje definici jednotlivých sloupců
+a pak samotná data. Definice sloupců obsahuje jeho datový typ, případně taky seznam možností, ze kterých si uživatel bude moct vybrat svou požadovanou hodnotu.
+Tato funkcionalita je znázorněna na obrázku \ref{fig:cell-choices} a jeji využití spočívá převážně u sloupců, jenž mají jednoznačně definované možné hodnoty.
 
-\begin{figure}[h]
-    \centering
-    \includegraphics[width=0.5\textwidth]{Figures/ui/cell-choices.png}
-    \caption{Výběr možností}
-    \label{fig:cell-choices}
+\begin{figure}
+    \begin{minipage}{.5\textwidth}
+        \centering
+        \includegraphics[width=.7\textwidth]{Figures/ui/cell-choices.png}
+        \caption{Výběr možností}        
+        \label{fig:cell-choices}
+    \end{minipage}
+    \begin{minipage}{.5\textwidth}
+        \centering
+        \includegraphics[width=1\textwidth]{Figures/ui/datagrid-controls.png}
+        \caption{Navigační prvky DataGridu}        
+        \label{fig:datagrid-controls}
+    \end{minipage}
 \end{figure}
+
+Pro jednoduchou a hlavně rychlou orientaci mezi kampaněmi, sestavamy, klíčovými slovy a reklamami slouží trojice Select boxů (obrázek \ref{fig:datagrid-controls}) s automatickým filtrováním.
+
+
 
 \subsection{Automatické ukládání změn}
 Všechny provedené změny se automaticky ukládají pomocí technologie \emph{Websockets}. Ta umožňuje vytvořit obousměrný komunikační kanál mezi serverem a prohlížečem uživatele.
