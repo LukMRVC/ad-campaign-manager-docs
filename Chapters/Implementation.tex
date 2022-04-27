@@ -42,7 +42,6 @@ možné typy cílení, které se mohou v CSV vyskytovat (věk, pohlaví, \ldots)
 
 
 \section{Tabulková správa kampaní}
-% TODO: Controls/orientation of datagrid
 Jak již bylo zminěno v části \ref{subsec:edit-campaigns}, jedním z nejrychlejších způsobu editace kampaní je tabulkovým procesorem.
 Proto bylo ve webovém rozhraní vytvořena možnost pracovat podobným způsobem. Obrázek \ref{fig:datagrid-window} ukazuje celkový pohled na rozhraní, ve kterém uživatel
 může provádět úpravy a správu svých kampaní a metadat.
@@ -61,7 +60,8 @@ Hlavní částí je komponenta \emph{DataGrid} (\ref{fig:datagrid}).
 \end{figure}
 Ta jako svůj vstup vyžaduje definici jednotlivých sloupců
 a pak samotná data. Definice sloupců obsahuje jeho datový typ, případně taky seznam možností, ze kterých si uživatel bude moct vybrat svou požadovanou hodnotu.
-Tato funkcionalita je znázorněna na obrázku \ref{fig:cell-choices} a jeji využití spočívá převážně u sloupců, jenž mají jednoznačně definované možné hodnoty.
+Tato funkcionalita je znázorněna na obrázku \ref{fig:cell-choices} a jeji využití spočívá převážně u sloupců, jenž mají jednoznačně definované možné hodnoty. DataGrid
+dále poskytuje jednoduché duplikování\footnote{Klávesa ALT a dvojité D} a mazání\footnote{Klávesa ALT a dvojité X} záznamů dalšími klávesovými zkratkami. 
 
 \begin{figure}
     \begin{minipage}{.5\textwidth}
@@ -79,11 +79,12 @@ Tato funkcionalita je znázorněna na obrázku \ref{fig:cell-choices} a jeji vyu
 \end{figure}
 
 Pro jednoduchou a hlavně rychlou orientaci mezi kampaněmi, sestavamy, klíčovými slovy a reklamami slouží trojice Select boxů (obrázek \ref{fig:datagrid-controls}) s automatickým filtrováním.
+Každý Select má svou klávesovou zkratku, skrze kterou se dá s daným vstupem ihned interagovat. 
 
 
 
 \subsection{Automatické ukládání změn}
-Všechny provedené změny se automaticky ukládají pomocí technologie \emph{Websockets}. Ta umožňuje vytvořit obousměrný komunikační kanál mezi serverem a prohlížečem uživatele.
+Všechny provedené změny se automaticky ukládají pomocí technologie \emph{Websockets}. Ta zprostředkovává plně duplexní komunikační kanál mezi serverem a prohlížečem uživatele.
 Websocket na serverové straně také umožňuje vzniklé události přeposílat všem připojeným klientům metodou broadcast. Tato spojení lze rozlišit podle přihlášeného uživatele nebo jakýchkoli jiných
 kritérií. Díky onomu přeposílání událostí je možné, aby na správně kampaní pracovalo více uživatelů najednou a v reálném čase viděli všechny prováděné změny.
 
@@ -99,8 +100,16 @@ Lze vybrat více klíčových slov najednou. Pokud se tak stane, vytvoří se no
     \label{fig:keyword-dialog}
 \end{figure}
 
+\subsection{Validace dat}
+Aby byl uživatel upozorněn na to, kdy zádává nevhodnou kombinaci hodnot, byly vytvořeny validátory, znázorněné na třídním diagramu \ref{fig:validators}. Každý konkrétní validátor
+očekává, že k validaci dostane instanci svého typu. Některé objekty potřebují ke správné validaci vědět, zda jsou součástí kampaně nebo sestavy správného typu.
 
-\subsection{Návrhy klíčových slov}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth]{Figures/Validators.pdf}
+    \caption{Třídní diagram validátorů}
+    \label{fig:validators}
+\end{figure}
 
 \section{Export kampaní}
 
