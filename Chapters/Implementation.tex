@@ -8,7 +8,7 @@ Pracovní postup se systémem je následnový:
     \item exportování dat a použití v reklamním systému.
 \end{enumerate}
 Data jsou perzistována v relační databázi PostgreSQL pomocí ORM systému Prisma.
-Paměťové úložiště v databázi Redis slouží jako zprostředkoval pro frontu úloh, cacheování požadavků na API třetích stran a dočasné úložiště importovaných dat.
+Paměťové úložiště v databázi Redis slouží jako zprostředkoval pro frontu úloh (Celery), cacheování požadavků na API třetích stran a dočasné úložiště importovaných dat.
 
 \begin{figure}[h]
     \centering
@@ -18,13 +18,21 @@ Paměťové úložiště v databázi Redis slouží jako zprostředkoval pro fro
 \end{figure}
 
 \section{Importování souborů}
-% TODO: UI of import and search and replace
 Ve webovém rozhraní, které slouží jako hlavní způsob interakce systému s uživatelem, je umožněno vybírání souboru ke zpracování.
 Jakmile je tento soubor nahrán na server, vytvoří se nový úkol do fronty úloh. Na pozadí je automaticky spuštěň nový proces, který
 zpracovává nahraný soubor. Uživatele v tento moment nic neblokuje a nebrání s další interakcí se systémem. Jakmile jsou data ze souboru
 získána, jsou dočasně uloženy do paměťové databáze Redis a uživateli je zobrazeno upozornění.
-Po rozkliknutí je přesměrován na stránku, kde si může vybrat, které části si přeje importovat a které ne.
-V případě využití funkce najít a nahradit se spustí další úloha na pozadí, která tento požadavek splní.
+Po rozkliknutí je přesměrován na stránku \ref{fig:import-sar}, kde si může vybrat, které části si přeje importovat a které ne.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth]{Figures/ui/import-sar.png}
+    \caption{Rozhraní pro importování kampaní a metadat}
+    \label{fig:import-sar}
+\end{figure}
+
+Další možností, kterou lze v tomto mezikroku využít je funkce najít a nahradit. Uživatel si může přidat libovolné množství
+slov, která chce najít a nahradit. V případě využití této funkce se spustí další úloha na pozadí, která tento požadavek splní.
 Následně jsou data zapsaná do relační databáze.
 
 Na třídním diagramu \ref{fig:campaigns-class-diagram} je vidět struktura kampaní, do které jsou data z CSV souboru transformována. Třída \emph{Targeting} reprezentuje všechny
@@ -36,9 +44,6 @@ možné typy cílení, které se mohou v CSV vyskytovat (věk, pohlaví, \ldots)
     \caption{Třídní diagram sturktury kampaní}
     \label{fig:campaigns-class-diagram}
 \end{figure}
-
-% Dodělat do systému funkci najít a nahradit -> další celery task, který upraví data, přepíše v 
-% Redisu a pošle request na Webserver, který to už uloží do DB
 
 
 \section{Tabulková správa kampaní}
@@ -103,6 +108,7 @@ Lze vybrat více klíčových slov najednou. Pokud se tak stane, vytvoří se no
 \subsection{Validace dat}
 Aby byl uživatel upozorněn na to, kdy zádává nevhodnou kombinaci hodnot, byly vytvořeny validátory, znázorněné na třídním diagramu \ref{fig:validators}. Každý konkrétní validátor
 očekává, že k validaci dostane instanci svého typu. Některé objekty potřebují ke správné validaci vědět, zda jsou součástí kampaně nebo sestavy správného typu.
+Jakmile nastane nějaká změna, je celý záznam vždy znovu validován a chyby jsou uživateli zobrazeny tak, aby si je mohl opravit.
 
 \begin{figure}[h]
     \centering
@@ -112,6 +118,17 @@ očekává, že k validaci dostane instanci svého typu. Některé objekty potř
 \end{figure}
 
 \section{Export kampaní}
+Exportování probíhá podobným způsobem jako import. Ve webovém rozhraní si uživatel vybere kampaně k exportování a může znovu využít funkce najít a nahradit.
+Následně se spouští proces na pozadí v Celery frontě se všemi potřebnými daty. V onom procesu probíhá transformace strukturovaných dat do
+formátu CSV. O tento převod se stará hierarchie tříd (\ref{fig:transformers}), využivající návrhový vzor \emph{template method}.
+Abstraktní třída \emph{AbstractTransformer} definuje kostru konverzního algoritmu a každá odvozená podtřída pouze upravuje specifické
+kroky. 
 
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth]{Figures/Transformers.pdf}
+    \caption{Třídní diagram transformátorů}
+    \label{fig:transformers}
+\end{figure}
 
 \endinput
