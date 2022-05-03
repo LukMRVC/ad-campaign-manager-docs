@@ -20,8 +20,38 @@ Paměťové úložiště v databázi Redis slouží jako zprostředkoval pro fro
 \section{Importování souborů}
 Ve webovém rozhraní, které slouží jako hlavní způsob interakce systému s uživatelem, je umožněno vybírání souboru ke zpracování.
 Jakmile je tento soubor nahrán na server, vytvoří se nový úkol do fronty úloh. Na pozadí je automaticky spuštěň nový proces, který
-zpracovává nahraný soubor. Uživatele v tento moment nic neblokuje a nebrání s další interakcí se systémem. Jakmile jsou data ze souboru
-získána, jsou dočasně uloženy do paměťové databáze Redis a uživateli je zobrazeno upozornění.
+zpracovává nahraný soubor. Uživatele v tento moment nic neblokuje a nebrání s další interakcí se systémem.
+
+CSV soubory využívané pro export/import kampaní se řídí pravidlem každé položky na samostatném řádku. Nejjednodušší představa, o tomto pravidle je takové, že
+každá položka ma svůj klíčový sloupec, pomocí kterého lze rozeznat rozeznat typ položky. Jesliže tedy v CSV souboru existuje sloupec \enquote{Keyword} a v tomto sloupci je
+na nějakém řádku hodnota, bude celý tento řádek popisovat klíčové slovo. Podobně, pokud například existuje sloupec \enquote{Headline 1} a v na nějakém řádku 
+je v tomto sloupci hodnota, bude celý řádek popisovat textovou reklamu. Pár výbraných klíčových sloupců a co popisují lze vidět v tabulce \ref{tab:csv-columns}.
+Jesliže je na stejném řádku ve více takovýchto sloupců hodnota, je to považováno za chybu a nelze takovýto řádek importovat. Jedinou výjimkou jsou sloupce
+\enquote{Campaign} a \enquote{Ad Group}, které v dané situaci nabývají významu, ke které kampani a sestavě daná reklama či klíčové slovo patří.
+
+\begin{table}[h]
+    \centering
+    \begin{tabular}{ |l|l| }
+        \hline
+        Označení sloupce & Typ položky \\
+        \hline
+        Campaign & Kampaň \\
+        Ad Group & Sestava \\
+        Keyword & Klíčové slovo \\
+        Age & Cílení - věk \\
+        Gender & Cílení - pohlaví \\
+        Topic & Cílení - Téma \\
+        Image & Banner \\
+        Headline 1 & Textová reklama \\
+        \hline
+    \end{tabular}
+    \caption{Tabulka klíčových sloupců a označení typů položky CSV souboru reklamních kampaní}
+    \label{tab:csv-columns}
+\end{table}
+
+Záhlaví sloupců je vyžadováno, jinak nelze poznat, co bude který řádek popisovat.
+
+Jakmile jsou data ze souboru získána, jsou dočasně uloženy do paměťové databáze Redis a uživateli je zobrazeno upozornění.
 Po rozkliknutí je přesměrován na stránku \ref{fig:import-sar}, kde si může vybrat, které části si přeje importovat a které ne.
 
 \begin{figure}[h]
@@ -93,17 +123,18 @@ Všechny provedené změny se automaticky ukládají pomocí technologie \emph{W
 Websocket na serverové straně také umožňuje vzniklé události přeposílat všem připojeným klientům metodou broadcast. Tato spojení lze rozlišit podle přihlášeného uživatele nebo jakýchkoli jiných
 kritérií. Díky onomu přeposílání událostí je možné, aby na správně kampaní pracovalo více uživatelů najednou a v reálném čase viděli všechny prováděné změny.
 
-\subsection{Výběr klíčových slov}
-Pokud si uživatel ke svému účtu uloží API klíč k platformě Sklik, může využívat doporučování klíčových slov. Stisknutím kláves CTRL a šipky nahoru se otevře dialogové okno,
-znázorněné na obrázku \ref{fig:keyword-dialog}. Zobrazí různé návrhy klíčových slov, včetně průměrné ceny za proklik při reakci na klíčové slovo a také počet zahledání, až půl roku zpětně.
-Lze vybrat více klíčových slov najednou. Pokud se tak stane, vytvoří se nové záznamy klíčových slov s totožnými parametry, které měl aktuálně nastaven upravovaný záznam.  
-
 \begin{figure}[h]
     \centering
     \includegraphics[width=1\textwidth]{Figures/ui/keyword-dialog.png}
     \caption{Dialogové okno pro výběr klíčových slov}
     \label{fig:keyword-dialog}
 \end{figure}
+
+\subsection{Výběr klíčových slov}
+Pokud si uživatel ke svému účtu uloží API klíč k platformě Sklik, může využívat doporučování klíčových slov. Stisknutím kláves CTRL a šipky nahoru se otevře dialogové okno,
+znázorněné na obrázku \ref{fig:keyword-dialog}. Zobrazí různé návrhy klíčových slov, včetně průměrné ceny za proklik při reakci na klíčové slovo a také počet zahledání, až půl roku zpětně.
+Lze vybrat více klíčových slov najednou. Pokud se tak stane, vytvoří se nové záznamy klíčových slov s totožnými parametry, které měl aktuálně nastaven upravovaný záznam.  
+
 
 \subsection{Validace dat}
 Aby byl uživatel upozorněn na to, kdy zádává nevhodnou kombinaci hodnot, byly vytvořeny validátory, znázorněné na třídním diagramu \ref{fig:validators}. Každý konkrétní validátor
@@ -112,7 +143,7 @@ Jakmile nastane nějaká změna, je celý záznam vždy znovu validován a chyby
 
 \begin{figure}[h]
     \centering
-    \includegraphics[width=1\textwidth]{Figures/Validators.pdf}
+    \includegraphics[width=.8\textwidth]{Figures/Validators.pdf}
     \caption{Třídní diagram validátorů}
     \label{fig:validators}
 \end{figure}
@@ -126,9 +157,10 @@ kroky.
 
 \begin{figure}[h]
     \centering
-    \includegraphics[width=1\textwidth]{Figures/Transformers.pdf}
+    \includegraphics[width=.8\textwidth]{Figures/Transformers.pdf}
     \caption{Třídní diagram transformátorů}
     \label{fig:transformers}
 \end{figure}
+
 
 \endinput
