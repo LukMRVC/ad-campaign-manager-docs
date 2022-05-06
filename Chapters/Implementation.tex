@@ -51,6 +51,10 @@ Jesliže je na stejném řádku ve více takovýchto sloupců hodnota, je to pov
 
 Záhlaví sloupců je vyžadováno, jinak nelze poznat, co bude který řádek popisovat.
 
+Importovaný soubor nemusí být jen jednotlivý CSV soubor, ale taktéž ZIP archiv, který tento CSV soubor obsahuje.
+Výhoda archivního souboru spočívá v možnosti nahrát si do systému i své bannery. K tomu je nutné, aby
+v archivu existovala složka s název \enquote{banners}, ve které budou obrázkové soubory. Tyto bannery se uloží na serveru a zároveň je k nim vytvořen záznam do databáze.
+
 Jakmile jsou data ze souboru získána, jsou dočasně uloženy do paměťové databáze Redis a uživateli je zobrazeno upozornění.
 Po rozkliknutí je přesměrován na stránku \ref{fig:import-sar}, kde si může vybrat, které části si přeje importovat a které ne.
 
@@ -63,7 +67,8 @@ Po rozkliknutí je přesměrován na stránku \ref{fig:import-sar}, kde si můž
 
 Další možností, kterou lze v tomto mezikroku využít je funkce najít a nahradit. Uživatel si může přidat libovolné množství
 slov, která chce najít a nahradit. V případě využití této funkce se spustí další úloha na pozadí, která tento požadavek splní.
-Následně jsou data zapsaná do relační databáze.
+Následně jsou data zapsaná do relační databáze. Pokud se při zapisování reklamních dat objeví hodnota ve atributu \enquote{Image},
+je daný záznam propojen se záznamem o nahraném banneru.
 
 Na třídním diagramu \ref{fig:campaigns-class-diagram} je vidět struktura kampaní, do které jsou data z CSV souboru transformována. Třída \emph{Targeting} reprezentuje všechny
 možné typy cílení, které se mohou v CSV vyskytovat (věk, pohlaví, \ldots). 
@@ -80,6 +85,7 @@ možné typy cílení, které se mohou v CSV vyskytovat (věk, pohlaví, \ldots)
 Jak již bylo zminěno v části \ref{subsec:edit-campaigns}, jedním z nejrychlejších způsobu editace kampaní je tabulkovým procesorem.
 Proto bylo ve webovém rozhraní vytvořena možnost pracovat podobným způsobem. Obrázek \ref{fig:datagrid-window} ukazuje celkový pohled na rozhraní, ve kterém uživatel
 může provádět úpravy a správu svých kampaní a metadat.
+
 \begin{figure}[h]
     \centering
     \includegraphics[width=1\textwidth]{Figures/ui/whole-window.png}
@@ -97,6 +103,15 @@ Ta jako svůj vstup vyžaduje definici jednotlivých sloupců
 a pak samotná data. Definice sloupců obsahuje jeho datový typ, případně taky seznam možností, ze kterých si uživatel bude moct vybrat svou požadovanou hodnotu.
 Tato funkcionalita je znázorněna na obrázku \ref{fig:cell-choices} a jeji využití spočívá převážně u sloupců, jenž mají jednoznačně definované možné hodnoty. DataGrid
 dále poskytuje jednoduché duplikování\footnote{Klávesa ALT a dvojité D} a mazání\footnote{Klávesa ALT a dvojité X} záznamů dalšími klávesovými zkratkami. 
+
+Vykreslování tabulkových dat a tabulek bývá výpočetně drahá operace, obzvláště v knihovně React. Jakákoliv změna stavu dat, tedy jakýkoli uživatelský vstup, by způsoboval
+překreslení celé tabulky. Aby se zamezilo nadměrnému vykreslování, existují 2 metody, které lze využít pro zlepšení výkonu. První z nich se nazývá \emph{debouncing}. V podstatě se jedná
+o funkci s nastaveným prahem\footnote{Nastavený prah je časová hodnota, nejčastěji udávána v milisekundách. Závisí však na konkrétní implementaci},
+která zachytává události (a nepropouští dále) nějakého typu (např. uživatelský vstup). Jestliže v nastavené době \textbf{nenastane událost}, vyšle poslední zachycenou.
+
+Druhá metoda pro optimalizaci vykreslování je memoizace. Při interakci uživatele s DataGridem se vždy mění obsah jedné buňky, respektive 2 buněk při změně zvýrazněné buňky.
+React toto neví a překresluje celou tabulku. Naštěstí můžeme buňky memoizovat, díky čemu překreslení nastane překreslení jen a pouze té buňky, která to doopravdy potřebuje.
+
 
 \begin{figure}
     \begin{minipage}{.5\textwidth}
@@ -149,6 +164,7 @@ Jakmile nastane nějaká změna, je celý záznam vždy znovu validován a chyby
 \end{figure}
 
 \section{Export kampaní}
+% Exportování s bannery
 Exportování probíhá podobným způsobem jako import. Ve webovém rozhraní si uživatel vybere kampaně k exportování a může znovu využít funkce najít a nahradit.
 Následně se spouští proces na pozadí v Celery frontě se všemi potřebnými daty. V onom procesu probíhá transformace strukturovaných dat do
 formátu CSV. O tento převod se stará hierarchie tříd (\ref{fig:transformers}), využivající návrhový vzor \emph{template method}.
