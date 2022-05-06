@@ -169,7 +169,16 @@ Exportování probíhá podobným způsobem jako import. Ve webovém rozhraní s
 Následně se spouští proces na pozadí v Celery frontě se všemi potřebnými daty. V onom procesu probíhá transformace strukturovaných dat do
 formátu CSV. O tento převod se stará hierarchie tříd (\ref{fig:transformers}), využivající návrhový vzor \emph{template method}.
 Abstraktní třída \emph{AbstractTransformer} definuje kostru konverzního algoritmu a každá odvozená podtřída pouze upravuje specifické
-kroky. 
+kroky. Strukturovaná data reklamní kampaně jsou transformátorům předána jako slovníky s názvem atributu a jeho hodnotou.
+Při převádění dat se nejdříve vytvoří pole o takové délce, kolik sloupců se bude muset zapsat do exportovaného CSV souboru. Informace o tom, jaké sloupce
+se budou zapisovat a na které pozici v poli se nachází, se udržuje ve třídě \emph{TransformerContext}. O tomto kontextu ví všechny transformátory.
+Postupně se prochází všechny atributy slovníku, které se překládají na sloupec CSV souboru a hodnoty se vkládají do pole.
+Jesliže se narazí na nový sloupec, je momentální pole rozšířeno a do kontextového slovníku je připsán záznam o názvu sloupce a jeho index. 
+Tímto je zajištěno, že se stejný sloupec nebude nacházet v exportovaném CSV vícekrát.
+
+
+Pokud se při exportování zjistí, že se exportují taktéž bannery, nebude výstupem pouhý CSV soubor, ale ZIP archiv obsahující daný CSV, společně s bannery.
+Tento archiv je možné importovat do reklamního systému Sklik.
 
 \begin{figure}[h]
     \centering
