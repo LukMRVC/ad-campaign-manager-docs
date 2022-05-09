@@ -53,7 +53,9 @@ Záhlaví sloupců je vyžadováno, jinak nelze poznat, co bude který řádek p
 
 Importovaný soubor nemusí být jen jednotlivý CSV soubor, ale taktéž ZIP archiv, který tento CSV soubor obsahuje.
 Výhoda archivního souboru spočívá v možnosti nahrát si do systému i své bannery. K tomu je nutné, aby
-v archivu existovala složka s název \enquote{banners}, ve které budou obrázkové soubory. Tyto bannery se uloží na serveru a zároveň je k nim vytvořen záznam do databáze.
+v archivu existovala složka s název \enquote{banners}, ve které budou obrázkové soubory. Tyto bannery se uloží na serveru a zároveň
+je k nim vytvořen záznam do databáze. Bannery se mohou nahrát do systému i samostatně, bez nutnosti využití importovacího rozhraní.
+
 
 Jakmile jsou data ze souboru získána, jsou dočasně uloženy do paměťové databáze Redis a uživateli je zobrazeno upozornění.
 Po rozkliknutí je přesměrován na stránku \ref{fig:import-sar}, kde si může vybrat, které části si přeje importovat a které ne.
