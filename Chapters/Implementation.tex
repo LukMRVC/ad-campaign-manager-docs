@@ -22,7 +22,7 @@ Ve webovém rozhraní, které slouží jako hlavní způsob interakce systému s
 Jakmile je tento soubor nahrán na server, vytvoří se nový úkol do fronty úloh. Na pozadí je automaticky spuštěň nový proces, který
 zpracovává nahraný soubor. Uživatele v tento moment nic neblokuje a nebrání s další interakcí se systémem.
 
-CSV soubory využívané pro export/import kampaní se řídí pravidlem každé položky na samostatném řádku. Nejjednodušší představa, o tomto pravidle je takové, že
+CSV soubory využívané pro export/import kampaní se řídí pravidlem každé položky na samostatném řádku. \cite{sklik:csv} Nejjednodušší představa, o tomto pravidle je takové, že
 každá položka ma svůj klíčový sloupec, pomocí kterého lze rozeznat rozeznat typ položky. Jesliže tedy v CSV souboru existuje sloupec \enquote{Keyword} a v tomto sloupci je
 na nějakém řádku hodnota, bude celý tento řádek popisovat klíčové slovo. Podobně, pokud například existuje sloupec \enquote{Headline 1} a v na nějakém řádku 
 je v tomto sloupci hodnota, bude celý řádek popisovat textovou reklamu. Pár výbraných klíčových sloupců a co popisují lze vidět v tabulce \ref{tab:csv-columns}.
