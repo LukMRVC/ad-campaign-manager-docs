@@ -165,6 +165,29 @@ Jakmile nastane nějaká změna, je celý záznam vždy znovu validován a chyby
     \label{fig:validators}
 \end{figure}
 
+\section{Transformace XML feedů}
+Pro produktové kampaně využívající XML feed je možné využít transformací XML feedů. Transformace jsou podmíněne, tzn. uživatel si vybere podmínku a akci, která se má
+vykonat, jesliže je podmínka splněna. Ku příkladu, pokud pole popisující poček kusů na skladu obsahuje nulu, tak je položka z feedu odstraněna. Transformací feedů
+se docílí tak, že uživatel zadá adresu svého neupraveného feedu. Systém si tento feed může pravidělně stahovat a provádět na něm transformace. Následně je tento upravený
+feed vystavený na nové adrese, kterou uživatel zadá do inzerentního systému. K dispozici jsou podmínky:
+\begin{itemize}
+    \item větší než,
+    \item menší než,
+    \item rovná se,
+    \item obsahuje.
+\end{itemize}
+Na tyto podmínky navazují akce:
+\begin{itemize}
+    \item nahradit,
+    \item odstranit,
+    \item odstranit element,
+    \item zvýšit,
+    \item snížit.
+\end{itemize}
+Akce \enquote{odstranit} odstraní položku feedu splňující danou podmínku, zatímco akce \enquote{odstranit element}
+odstraní vybraný XML element položky.
+
+
 \section{Export kampaní}
 % Exportování s bannery
 Exportování probíhá podobným způsobem jako import. Ve webovém rozhraní si uživatel vybere kampaně k exportování a může znovu využít funkce najít a nahradit.
