@@ -50,4 +50,45 @@
 \printbibliography[title={Literatura}, heading=bibintoc]
 % Zde vlozime uvod
 
+\appendix
+\chapter{Návod na instalaci}\label{chap:appendix-1}
+K instalaci je nutné mít na systému nainstalované programy
+\emph{Node.js (verze 16.3.1) společně s NPM (verze 8.3.0), Redis, databázový systém PostgreSQL (verze 14), Python3.8 společně s pipenv}.
+
+Systém je rozdělen do 2 částí. První je v fronta úloh, zpracující úkoly, implementovaná v Pythonu a je součástí příloh této práce.
+Aby bylo následné spuštění možné, je potřeba mít nastavené proměnnou prostředí \texttt{WORKER\_DATABASE\_PASSWORD} nastavenou validní heslo k databázi.
+V příkazové řádce je potřeba se přesunout do místa umístění zdrojových kódů této části systému a spustit příkazy:
+\begin{enumerate}
+    \item \texttt{pipenv shell},
+    \item \texttt{pipenv sync},
+    \item \texttt{bash run\_celery.sh INFO}.
+\end{enumerate}
+Tímto se spustí fronta úloh.
+
+Pro spuštění webového serveru je opět nutné stáhnout zdrojové kódy. Nastavení proměnných prostředí je o něco složitější.
+Je potřeba nastavit:
+
+\begin{itemize}
+    \item \texttt{BASE\_URI='http://localhost:3000'},
+    \item \texttt{BASE\_PATH='/cesta/ke/zdrojovym/souborum'},
+    \item \texttt{DATABASE\_URL="postgresql://postgres:postgres@localhost:5432/database?schema=public"},
+    \item \texttt{CELERY\_BACKEND='redis://localhost:6379'},
+    \item \texttt{CELERY\_BROKER='redis://localhost:6379'},
+    \item \texttt{GITHUB\_ID=githubID},
+    \item \texttt{GITHUB\_SECRET=githubSecret},
+    \item \texttt{NEXT\_AUTH\_SECRET=NEXT\_AUTH\_SECRET},
+    \item \texttt{NEXTAUTH\_URL=http://localhost:3000/api/auth}.
+\end{itemize}
+Hodnoty \texttt{GITHUB\_ID} a \texttt{GITHUB\_SECRET} je nutné získat z nastavení OAuth2.0 na webu \texttt{github.com} z nastavení vlastního účtu.
+Hodnotu proměnné \texttt{NEXT\_AUTH\_SECRET} lze jednoduše vygenerovat použítím příkazu \texttt{openssl rand -base64 32}.
+
+Následně v příkazové řádce je potřeba se přesunout do místa umístění zdrojových souborů a spustit následující programy:
+\begin{enumerate}
+    \item \texttt{npm install},
+    \item \texttt{npx prisma migrate deploy}.
+    \item \texttt{npm run build},
+    \item \texttt{npm run start}.
+\end{enumerate}
+Server se spustí a aplikace je dostupná na rozhraní \texttt{http://localhost:3000}.
+
 \end{document}
